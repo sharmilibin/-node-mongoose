@@ -16,11 +16,26 @@ connect.then((db) => {
         .then((dish) => {
             console.log('Printing the inserted dish ::: => ', dish);
 
-            return Dishes.find({});
+            return Dishes.findByIdAndUpdate(dish._id,{
+                description: 'updated dish'
+            },{
+                new: true
+            }).exec();
         })
-        .then((dishes) => {
-            console.log('Printing the found dishes ::: => ', dishes);
+        .then((dish) => {
+            console.log('Printing the updated dish ::: => ', dish);
 
+            dish.comments.push({
+                rating: 5, 
+                author: 'Libin',
+                comment: 'very tasty'
+                
+            });
+            return dish.save();
+        })
+        .then((dish) => {
+        
+            console.log('Printing the dish after adding comment ::: => ', dish);
             return Dishes.remove({});
         })
         .then(() => {
